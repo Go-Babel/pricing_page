@@ -1,5 +1,5 @@
 name: pricing_page
-description: "A new Flutter package project."
+description: "A pre-made custom pricing page component. Easy for quick-setup of a ui charging your customers."
 version: 1.0.0
 repository: https://github.com/Go-Babel/pricing_page
 issue_tracker: https://github.com/Go-Babel/pricing_page/issues
