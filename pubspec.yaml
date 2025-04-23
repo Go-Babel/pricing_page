@@ -15,8 +15,7 @@ dependencies:
   collection: ^1.19.1
   dart_debouncer: ^1.1.1
   lottie: ^3.3.1
-  babel_text:
-    path: ../babel_text
+  babel_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:

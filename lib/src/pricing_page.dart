@@ -14,12 +14,22 @@ class PricingPage extends StatefulWidget {
   final double childAspectRatio;
   final String title;
   final String subtitle;
+  final String payMonthly;
+  final String payYearly;
+  final String perYearText;
+  final String perMonthText;
+  final String buttonName;
   const PricingPage({
     super.key,
     required this.pricesList,
     int? crossAxisCount,
     this.title = 'Pricing',
     required this.subtitle,
+    this.buttonName = 'START NOW',
+    this.perYearText = 'START NOW',
+    this.perMonthText = 'START NOW',
+    this.payMonthly = 'Pay monthly',
+    this.payYearly = 'Pay yearly',
     this.decorationMapper,
     this.childAspectRatio = 1,
     this.width = double.infinity,
@@ -78,7 +88,7 @@ class _PricingPageState extends State<PricingPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                BabelText('Pay monthly', style: TextStyle(fontSize: 20)),
+                BabelText(widget.payMonthly, style: TextStyle(fontSize: 20)),
                 Switch(
                   value: isYearly,
                   onChanged: (value) {
@@ -93,7 +103,7 @@ class _PricingPageState extends State<PricingPage> {
                     });
                   },
                 ),
-                BabelText('Pay yearly', style: TextStyle(fontSize: 20)),
+                BabelText(widget.payYearly, style: TextStyle(fontSize: 20)),
               ],
             ),
             SizedBox(height: 36),
@@ -186,7 +196,9 @@ class _PricingPageState extends State<PricingPage> {
                                                             height: 0.85,
                                                           ),
                                                         ),
-                                                        Text('/ MONTH'),
+                                                        Text(
+                                                          widget.perMonthText,
+                                                        ),
                                                       ],
                                                     ),
                                                   )
@@ -233,7 +245,7 @@ class _PricingPageState extends State<PricingPage> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          '/ PER YEAR',
+                                                          widget.perYearText,
                                                           style: TextStyle(
                                                             color: Colors.grey,
                                                           ),
@@ -251,12 +263,6 @@ class _PricingPageState extends State<PricingPage> {
                                             ],
                                           ),
                                         ),
-                                        // BabelText(
-                                        //   isYearly ? '/ YEAR' : '/ MONTH',
-                                        //   baseTextStyle: TextStyle(),
-                                        // ),
-                                        // Text(price.monthlyPrice),
-                                        // Text(price.yearlyPrice),
                                         SizedBox(height: 12),
                                         Column(
                                           crossAxisAlignment:
@@ -342,7 +348,7 @@ class _PricingPageState extends State<PricingPage> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: Text('START NOW'),
+                                child: Text(widget.buttonName),
                               ),
                             if (price.emphasisText == null)
                               OutlinedButton(
@@ -359,7 +365,7 @@ class _PricingPageState extends State<PricingPage> {
                                     width: 3,
                                   ),
                                 ),
-                                child: Text('START NOW'),
+                                child: Text(widget.buttonName),
                               ),
                           ],
                         );
