@@ -38099,7 +38099,7 @@ if(r.$2(a,j)>0){s[b]=j
 b=o}}s[b]=a}}
 A.Eq.prototype={
 Y(a){var s=null
-return new A.uP(B.ET,"Flutter Demo",A.aeN(s,A.ahk(B.a6,s,s,B.Ey),s),s)}}
+return new A.uP(B.ET,"Pricing Page Demo",A.aeN(s,A.ahk(B.a6,s,s,B.Ey),s),s)}}
 A.v4.prototype={
 ap(){return new A.KC()}}
 A.KC.prototype={
