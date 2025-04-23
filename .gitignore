@@ -5,7 +5,6 @@
 *.swp
 .DS_Store
 .atom/
-.buildlog/
 .history
 .svn/
 migrate_working_dir/
@@ -28,4 +27,3 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-build/
