@@ -1,5 +1,5 @@
 ### ▶️ Pricing page:
-A pre-made custom pricing page component. Easy for quick ui charging your customers.
+A pre-made custom pricing page component. Easy for quick-setup of a ui charging your customers.
 
 ## 🌟 Test the live demo!
 <b>[Test the package in a online web demo:](https://go-babel.github.io/pricing_page/)</b><br>
