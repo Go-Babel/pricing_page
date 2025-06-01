@@ -58,7 +58,7 @@ class _PricingPageState extends State<PricingPage> {
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.2), // Shadow color with opacity
+          color: Colors.black.withAlpha(50), // Shadow color with opacity
           spreadRadius: 5, // How much the shadow spreads
           blurRadius: 7, // How blurry the shadow is
           offset: Offset(0, 3), // Shadow position (x, y)
