@@ -29,10 +29,10 @@ packages:
     dependency: "direct main"
     description:
       name: babel_text
-      sha256: "88a47955bafc97eaecfe189d591b284feeefd9558fd17aa3871c7618ddbbca56"
+      sha256: "98118a9397239b2191e3066b294ef91f4a6ad5ac4f91e902373922c96b37938f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "2.0.2"
   boolean_selector:
     dependency: transitive
     description:

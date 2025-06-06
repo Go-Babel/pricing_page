@@ -298,11 +298,15 @@ class _PricingPageState extends State<PricingPage> {
                                                     ),
                                                     innerWidgetMapping: {
                                                       '@@':
-                                                          (context, text) =>
-                                                              Icon(
-                                                                Icons.check_box,
-                                                                size: 22,
-                                                              ),
+                                                          (
+                                                            context,
+                                                            text,
+                                                          ) => BabelWidget(
+                                                            child: Icon(
+                                                              Icons.check_box,
+                                                              size: 22,
+                                                            ),
+                                                          ),
                                                     },
                                                   ),
                                                 );
