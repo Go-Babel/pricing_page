@@ -30,11 +30,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 224, 240, 255),
       body: PricingBackground(
         child: PricingPage(
-          width: 832,
+          width: isMobile ? double.infinity : 832,
           childAspectRatio: 0.7,
           subtitle:
               "We have you covered, whether you're an unique person running\na side-project, a startup or even an enterprise company.",

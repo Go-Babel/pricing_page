@@ -68,68 +68,136 @@ class _PricingPageState extends State<PricingPage> {
 
     final decoration =
         widget.decorationMapper?.call(defaultDecoration) ?? defaultDecoration;
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: widget.width),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BabelText('<b>${widget.title}<b>', style: TextStyle(fontSize: 40)),
-            BabelText(
-              widget.subtitle,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context).colorScheme.outline,
+    
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        final isMobile = screenWidth < 600;
+        final isTablet = screenWidth >= 600 && screenWidth < 900;
+        
+        int crossAxisCount;
+        double fontSize;
+        double titleFontSize;
+        double priceFontSize;
+        double toggleFontSize;
+        double spacing;
+        double aspectRatio;
+        
+        if (isMobile) {
+          crossAxisCount = 1;
+          fontSize = 14;
+          titleFontSize = 28;
+          priceFontSize = 32;
+          toggleFontSize = 16;
+          spacing = 16;
+          aspectRatio = 1.2;
+        } else if (isTablet) {
+          crossAxisCount = 2;
+          fontSize = 15;
+          titleFontSize = 34;
+          priceFontSize = 36;
+          toggleFontSize = 18;
+          spacing = 18;
+          aspectRatio = 0.8;
+        } else {
+          crossAxisCount = widget.crossAxisCount;
+          fontSize = 16;
+          titleFontSize = 40;
+          priceFontSize = 40;
+          toggleFontSize = 20;
+          spacing = 20;
+          aspectRatio = widget.childAspectRatio;
+        }
+        
+        return SingleChildScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: isMobile ? double.infinity : widget.width,
+                minHeight: constraints.maxHeight,
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                BabelText(widget.payMonthly, style: TextStyle(fontSize: 20)),
-                Switch(
-                  value: isYearly,
-                  onChanged: (value) {
-                    setState(() {
-                      isYearly = value;
-                    });
-                    _timer?.cancel();
-                    _timer = Timer(Duration(milliseconds: 700), () {
-                      setState(() {
-                        didSwitchAnimation = !didSwitchAnimation;
-                      });
-                    });
-                  },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 16 : 0,
+                  vertical: isMobile ? 20 : 0,
                 ),
-                BabelText(widget.payYearly, style: TextStyle(fontSize: 20)),
-              ],
-            ),
-            SizedBox(height: 36),
-            Stack(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 300),
-                    child: Transform.scale(
-                      scale: 1.14,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 4,
-                        children: List.generate(8, (index) => _row),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  BabelText(
+                    '<b>${widget.title}<b>', 
+                    style: TextStyle(fontSize: titleFontSize),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isMobile ? 0 : 20,
+                    ),
+                    child: BabelText(
+                      widget.subtitle,
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w300,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                GridView.count(
-                  shrinkWrap: true,
-                  // cacheExtent: 100,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 16,
-                  crossAxisCount: 3,
-                  childAspectRatio: widget.childAspectRatio,
-                  children:
+                  SizedBox(height: spacing),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BabelText(
+                        widget.payMonthly, 
+                        style: TextStyle(fontSize: toggleFontSize),
+                      ),
+                      Switch(
+                        value: isYearly,
+                        onChanged: (value) {
+                          setState(() {
+                            isYearly = value;
+                          });
+                          _timer?.cancel();
+                          _timer = Timer(Duration(milliseconds: 700), () {
+                            setState(() {
+                              didSwitchAnimation = !didSwitchAnimation;
+                            });
+                          });
+                        },
+                      ),
+                      BabelText(
+                        widget.payYearly, 
+                        style: TextStyle(fontSize: toggleFontSize),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: spacing * 1.8),
+                  Stack(
+                    children: [
+                      if (!isMobile)
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 300),
+                            child: Transform.scale(
+                              scale: 1.14,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 4,
+                                children: List.generate(8, (index) => _row),
+                              ),
+                            ),
+                          ),
+                        ),
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: isMobile ? NeverScrollableScrollPhysics() : null,
+                        mainAxisSpacing: spacing,
+                        crossAxisSpacing: spacing * 0.8,
+                        crossAxisCount: crossAxisCount,
+                        childAspectRatio: aspectRatio,
+                        padding: EdgeInsets.only(
+                          bottom: isMobile ? 20 : 0,
+                        ),
+                        children:
                       widget.pricesList.map((PricesModel price) {
                         final tileDec =
                             price.decoration ??
@@ -152,167 +220,204 @@ class _PricingPageState extends State<PricingPage> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    // height: widget.height,
                                     decoration: tileDec,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 16),
-                                        if (price.emphasisText == null)
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: isMobile ? 12 : 16,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                        SizedBox(height: isMobile ? 12 : 16),
+                                        if (price.emphasisText == null && !isMobile)
                                           SizedBox(height: 5),
                                         BabelText(
                                           price.title,
                                           style: TextStyle(
-                                            fontSize: 24,
+                                            fontSize: isMobile ? 20 : 24,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: 60,
-                                          child: Stack(
-                                            children: [
-                                              Align(
-                                                    alignment: Alignment(
-                                                      -0.6,
-                                                      0,
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        AnimatedFlipCounter(
-                                                          duration: Duration(
-                                                            milliseconds: 500,
-                                                          ),
-                                                          value:
-                                                              isYearly
-                                                                  ? (price.yearlyPrice /
-                                                                          12)
-                                                                      .ceil()
-                                                                  : price
-                                                                      .monthlyPrice,
-                                                          textStyle: TextStyle(
-                                                            fontSize: 40,
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                            height: 0.85,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          widget.perMonthText,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                  .animate(
-                                                    target:
-                                                        didSwitchAnimation
-                                                            ? 1
-                                                            : 0,
-                                                  )
-                                                  .slideX(begin: 0.22),
-                                              Center(
-                                                    child: VerticalDivider(
-                                                      indent: 6,
-                                                      endIndent: 6,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  )
-                                                  .animate(
-                                                    target:
-                                                        didSwitchAnimation
-                                                            ? 1
-                                                            : 0,
-                                                  )
-                                                  .fadeIn(),
-                                              Align(
-                                                    alignment: Alignment(
-                                                      0.67,
-                                                      0,
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        AnimatedFlipCounter(
-                                                          duration: Duration(
-                                                            milliseconds: 500,
-                                                          ),
-                                                          value:
-                                                              price.yearlyPrice,
-                                                          textStyle: TextStyle(
-                                                            fontSize: 40,
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                            height: 0.85,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          widget.perYearText,
-                                                          style: TextStyle(
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                  .animate(
-                                                    target:
-                                                        didSwitchAnimation
-                                                            ? 1
-                                                            : 0,
-                                                  )
-                                                  .fadeIn(),
-                                            ],
+                                        if (isMobile)
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 60,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                AnimatedFlipCounter(
+                                                  duration: Duration(
+                                                    milliseconds: 500,
+                                                  ),
+                                                  value:
+                                                      isYearly
+                                                          ? (price.yearlyPrice / 12).ceil()
+                                                          : price.monthlyPrice,
+                                                  textStyle: TextStyle(
+                                                    fontSize: priceFontSize,
+                                                    fontWeight: FontWeight.w300,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  isYearly 
+                                                    ? '${widget.perMonthText} (billed yearly)'
+                                                    : widget.perMonthText,
+                                                  style: TextStyle(fontSize: 11),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 12),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          spacing: 12,
-                                          children:
-                                              price.advantagesListage.map((
-                                                advantage,
-                                              ) {
-                                                return Container(
-                                                  width: double.infinity,
-                                                  // margin: EdgeInsets.symmetric(
-                                                  //   horizontal: 12,
-                                                  // ),
-                                                  padding: EdgeInsets.only(
-                                                    left: 8,
-                                                    top: 6,
-                                                    bottom: 6,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    // borderRadius:
-                                                    //     BorderRadius.circular(8),
-                                                    color:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .tertiaryContainer,
-                                                  ),
-                                                  child: BabelText(
-                                                    '@@ $advantage',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      height: 1.4,
-                                                    ),
-                                                    innerWidgetMapping: {
-                                                      '@@':
-                                                          (
-                                                            context,
-                                                            text,
-                                                          ) => BabelWidget(
-                                                            child: Icon(
-                                                              Icons.check_box,
-                                                              size: 22,
+                                        if (!isMobile)
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 60,
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                      alignment: Alignment(
+                                                        -0.6,
+                                                        0,
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          AnimatedFlipCounter(
+                                                            duration: Duration(
+                                                              milliseconds: 500,
+                                                            ),
+                                                            value:
+                                                                isYearly
+                                                                    ? (price.yearlyPrice /
+                                                                            12)
+                                                                        .ceil()
+                                                                    : price
+                                                                        .monthlyPrice,
+                                                            textStyle: TextStyle(
+                                                              fontSize: priceFontSize,
+                                                              fontWeight:
+                                                                  FontWeight.w300,
+                                                              height: 0.85,
                                                             ),
                                                           ),
-                                                    },
-                                                  ),
-                                                );
-                                              }).toList(),
+                                                          Text(
+                                                            widget.perMonthText,
+                                                            style: TextStyle(fontSize: fontSize * 0.875),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                    .animate(
+                                                      target:
+                                                          didSwitchAnimation
+                                                              ? 1
+                                                              : 0,
+                                                    )
+                                                    .slideX(begin: 0.22),
+                                                Center(
+                                                      child: VerticalDivider(
+                                                        indent: 6,
+                                                        endIndent: 6,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    )
+                                                    .animate(
+                                                      target:
+                                                          didSwitchAnimation
+                                                              ? 1
+                                                              : 0,
+                                                    )
+                                                    .fadeIn(),
+                                                Align(
+                                                      alignment: Alignment(
+                                                        0.67,
+                                                        0,
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          AnimatedFlipCounter(
+                                                            duration: Duration(
+                                                              milliseconds: 500,
+                                                            ),
+                                                            value:
+                                                                price.yearlyPrice,
+                                                            textStyle: TextStyle(
+                                                              fontSize: priceFontSize,
+                                                              fontWeight:
+                                                                  FontWeight.w300,
+                                                              height: 0.85,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            widget.perYearText,
+                                                            style: TextStyle(
+                                                              color: Colors.grey,
+                                                              fontSize: fontSize * 0.875,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                    .animate(
+                                                      target:
+                                                          didSwitchAnimation
+                                                              ? 1
+                                                              : 0,
+                                                    )
+                                                    .fadeIn(),
+                                              ],
+                                            ),
+                                          ),
+                                        SizedBox(height: isMobile ? 8 : 12),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: isMobile ? 8 : 0,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            spacing: isMobile ? 8 : 12,
+                                            children:
+                                                price.advantagesListage.map((
+                                                  advantage,
+                                                ) {
+                                                  return Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.only(
+                                                      left: isMobile ? 6 : 8,
+                                                      top: isMobile ? 4 : 6,
+                                                      bottom: isMobile ? 4 : 6,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .tertiaryContainer,
+                                                    ),
+                                                    child: BabelText(
+                                                      '@@ $advantage',
+                                                      style: TextStyle(
+                                                        fontSize: isMobile ? 14 : fontSize,
+                                                        height: 1.4,
+                                                      ),
+                                                      innerWidgetMapping: {
+                                                        '@@':
+                                                            (
+                                                              context,
+                                                              text,
+                                                            ) => BabelWidget(
+                                                              child: Icon(
+                                                                Icons.check_box,
+                                                                size: isMobile ? 18 : 22,
+                                                              ),
+                                                            ),
+                                                      },
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                          ),
                                         ),
                                       ],
+                                    ),
                                     ),
                                   ),
                                   if (price.emphasisText != null)
@@ -342,23 +447,26 @@ class _PricingPageState extends State<PricingPage> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 12),
+                            SizedBox(height: isMobile ? 8 : 12),
                             if (price.emphasisText != null)
                               FilledButton(
                                 onPressed: () => price.onTap.call(isYearly),
                                 style: FilledButton.styleFrom(
-                                  fixedSize: Size.fromHeight(40),
+                                  fixedSize: Size.fromHeight(isMobile ? 36 : 40),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: Text(widget.buttonName),
+                                child: Text(
+                                  widget.buttonName,
+                                  style: TextStyle(fontSize: isMobile ? 14 : null),
+                                ),
                               ),
                             if (price.emphasisText == null)
                               OutlinedButton(
                                 onPressed: () => price.onTap.call(isYearly),
                                 style: OutlinedButton.styleFrom(
-                                  fixedSize: Size.fromHeight(40),
+                                  fixedSize: Size.fromHeight(isMobile ? 36 : 40),
                                   backgroundColor: tileDec.color,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
@@ -366,31 +474,39 @@ class _PricingPageState extends State<PricingPage> {
                                   side: BorderSide(
                                     color:
                                         Theme.of(context).colorScheme.primary,
-                                    width: 3,
+                                    width: isMobile ? 2 : 3,
                                   ),
                                 ),
-                                child: Text(widget.buttonName),
+                                child: Text(
+                                  widget.buttonName,
+                                  style: TextStyle(fontSize: isMobile ? 14 : null),
+                                ),
                               ),
                           ],
                         );
                       }).toList(),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
+      },
+    );
   }
 }
+
+const _circle = Icon(
+  Icons.circle,
+  size: 12,
+  color: Color.fromARGB(97, 191, 191, 191),
+);
 
 final _row = Row(
   mainAxisAlignment: MainAxisAlignment.center,
   spacing: 4,
   children: List.generate(50, (index) => _circle),
-);
-const _circle = Icon(
-  Icons.circle,
-  size: 12,
-  color: Color.fromARGB(97, 191, 191, 191),
 );
