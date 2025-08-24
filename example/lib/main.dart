@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 '<b><u><tC>4<tC><u><b> languages',
                 '<b><u><tC>1<tC><u><b> account',
               ],
-              onTap: (bool isYearly) {},
+              onTap: (bool isYearly) async {},
             ),
             PricesModel(
               title: 'PRO',
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 '<b><u><tC>10<tC><u><b> languages',
                 '<b><u><tC>5<tC><u><b> accounts',
               ],
-              onTap: (bool isYearly) {},
+              onTap: (bool isYearly) async {},
             ),
             PricesModel(
               title: 'UNLIMITED',
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 '<b><u><tC>Unlimited<tC><u><b> languages',
                 '<b><u><tC>Unlimited<tC><u><b> accounts',
               ],
-              onTap: (bool isYearly) {},
+              onTap: (bool isYearly) async {},
             ),
           ],
         ),

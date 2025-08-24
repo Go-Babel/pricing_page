@@ -8,7 +8,7 @@ class PricesModel {
   final List<String> advantagesListage;
   final int advantagesMaxLines = 2;
   final BoxDecoration? decoration;
-  final void Function(bool isYearly) onTap;
+  final Future<void> Function(bool isYearly) onTap;
   final String? emphasisText;
 
   const PricesModel({

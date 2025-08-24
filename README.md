@@ -1,6 +1,12 @@
 ### ▶️ Pricing page:
 A pre-made custom pricing page component. Easy for quick-setup of a ui charging your customers.
 
+## ✨ Features
+- **Built-in loading state management**: The package automatically handles loading states for buttons
+- **Automatic UI feedback**: Shows loading indicators and disables all buttons during async operations
+- **Responsive design**: Adapts to different screen sizes
+- **Customizable styling**: Support for custom decorations and text styles
+
 ## 🌟 Test the live demo!
 <b>[Test the package in a online web demo:](https://go-babel.github.io/pricing_page/)</b><br>
 [https://go-babel.github.io/pricing_page/](https://go-babel.github.io/pricing_page/)
@@ -35,7 +41,10 @@ Scaffold(
             '<b><u><tC>4<tC><u><b> languages',
             '<b><u><tC>1<tC><u><b> account',
           ],
-          onTap: (bool isYearly) {},
+          onTap: (bool isYearly) async {
+            // Your async logic here (e.g., API calls, navigation)
+            await Future.delayed(Duration(seconds: 2));
+          },
         ),
         PricesModel(
           title: 'PRO',
@@ -48,7 +57,10 @@ Scaffold(
             '<b><u><tC>10<tC><u><b> languages',
             '<b><u><tC>5<tC><u><b> accounts',
           ],
-          onTap: (bool isYearly) {},
+          onTap: (bool isYearly) async {
+            // Your async logic here (e.g., API calls, navigation)
+            await Future.delayed(Duration(seconds: 2));
+          },
         ),
         PricesModel(
           title: 'UNLIMITED',
@@ -60,10 +72,24 @@ Scaffold(
             '<b><u><tC>Unlimited<tC><u><b> languages',
             '<b><u><tC>Unlimited<tC><u><b> accounts',
           ],
-          onTap: (bool isYearly) {},
+          onTap: (bool isYearly) async {
+            // Your async logic here (e.g., API calls, navigation)
+            await Future.delayed(Duration(seconds: 2));
+          },
         ),
       ],
     ),
   ),
 )
 ```
+
+## 📌 Important Notes
+
+### Loading State Management
+The package **automatically handles loading states** when buttons are pressed:
+- When a button is clicked, it shows a loading indicator
+- The clicked button turns grey during loading
+- All other buttons are disabled to prevent multiple simultaneous actions
+- Once the async operation completes, buttons return to normal state
+
+You don't need to manage any loading state yourself - just provide an async function to `onTap` and the package handles the rest!
