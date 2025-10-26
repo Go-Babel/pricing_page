@@ -4,8 +4,10 @@ A pre-made custom pricing page component. Easy for quick-setup of a ui charging 
 ## ✨ Features
 - **Built-in loading state management**: The package automatically handles loading states for buttons
 - **Automatic UI feedback**: Shows loading indicators and disables all buttons during async operations
-- **Responsive design**: Adapts to different screen sizes
+- **Fully responsive design**: Beautiful mobile-optimized UI with auto-scrolling, desktop layout with flexible column sizing
+- **Flexible desktop layout**: Choose between equal-height columns or independent sizing based on content
 - **Customizable styling**: Support for custom decorations and text styles
+- **Modern UI/UX**: Polished design with improved spacing, typography, shadows, and interactive elements
 
 ## 🌟 Test the live demo!
 <b>[Test the package in a online web demo:](https://go-babel.github.io/pricing_page/)</b><br>
@@ -25,6 +27,8 @@ Scaffold(
       childAspectRatio: 0.7,
       subtitle:
           "We have you covered, whether you're an unique person running\na side-project, a startup or even an enterprise company.",
+      // Optional: Force all columns to have the same height on desktop
+      forceAllColumnsToHaveSameSizeInDesktop: false,
       decorationMapper: (decoration) {
         return decoration.copyWith(
           color: Theme.of(context).colorScheme.onSecondary,
@@ -93,3 +97,22 @@ The package **automatically handles loading states** when buttons are pressed:
 - Once the async operation completes, buttons return to normal state
 
 You don't need to manage any loading state yourself - just provide an async function to `onTap` and the package handles the rest!
+
+### Desktop Layout Options
+Control how pricing cards are displayed on desktop with the `forceAllColumnsToHaveSameSizeInDesktop` parameter:
+
+**`false` (default)** - Cards size independently based on their content:
+- Each card adjusts its height to fit its features
+- Cards with fewer features are shorter
+- More natural, content-driven layout
+- Recommended for pricing tiers with significantly different feature counts
+
+**`true`** - All cards match the height of the tallest card:
+- Creates a uniform, aligned appearance
+- All cards have equal height regardless of content
+- Better visual symmetry
+- Recommended when visual consistency is priority
+
+### Responsive Breakpoints
+- **Mobile** (< 900px): Vertical scrollable layout with full-width cards
+- **Desktop** (≥ 900px): Horizontal layout with side-by-side pricing cards

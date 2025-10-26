@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color.fromARGB(255, 224, 240, 255),
       body: PricingBackground(
         child: PricingPage(
+          forceAllColumnsToHaveSameSizeInDesktop: false,
           width: 865,
           childAspectRatio: 0.45,
           perMonthText: 'Per month',
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           pricesList: [
             PricesModel(
-              title: 'BASIC',
+              title: 'BASICA',
               subTitle: 'FOR SIDE-PROJECTS',
               monthlyPrice: 100,
               yearlyPrice: 1050,

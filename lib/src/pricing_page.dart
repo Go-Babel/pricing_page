@@ -19,6 +19,7 @@ class PricingPage extends StatefulWidget {
   final String perYearText;
   final String perMonthText;
   final String buttonName;
+  final bool forceAllColumnsToHaveSameSizeInDesktop;
   const PricingPage({
     super.key,
     required this.pricesList,
@@ -33,6 +34,7 @@ class PricingPage extends StatefulWidget {
     this.decorationMapper,
     this.childAspectRatio = 1,
     this.width = double.infinity,
+    this.forceAllColumnsToHaveSameSizeInDesktop = false,
   }) : crossAxisCount = crossAxisCount ?? pricesList.length;
 
   @override
@@ -225,41 +227,82 @@ class _PricingPageState extends State<PricingPage> {
                               ),
                             ),
                           ),
-                          IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: widget.pricesList.asMap().entries.map((entry) {
-                                final index = entry.key;
-                                final price = entry.value;
-                                final tileDec = price.decoration ??
-                                    decoration.copyWith(
-                                      border: price.emphasisText != null
-                                          ? Border.all(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              width: 5,
-                                            )
-                                          : null,
-                                    );
-                                return Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      right: index < widget.pricesList.length - 1
-                                          ? spacing * 0.8
-                                          : 0,
-                                    ),
-                                    child: _buildPricingCard(
-                                      context,
-                                      index,
-                                      price,
-                                      tileDec,
-                                      false,
-                                      fontSize,
-                                      priceFontSize,
-                                    ),
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              if (widget.forceAllColumnsToHaveSameSizeInDesktop) {
+                                return IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: widget.pricesList.asMap().entries.map((entry) {
+                                      final index = entry.key;
+                                      final price = entry.value;
+                                      final tileDec = price.decoration ??
+                                          decoration.copyWith(
+                                            border: price.emphasisText != null
+                                                ? Border.all(
+                                                    color: Theme.of(context).colorScheme.primary,
+                                                    width: 5,
+                                                  )
+                                                : null,
+                                          );
+                                      return Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            right: index < widget.pricesList.length - 1
+                                                ? spacing * 0.8
+                                                : 0,
+                                          ),
+                                          child: _buildPricingCard(
+                                            context,
+                                            index,
+                                            price,
+                                            tileDec,
+                                            false,
+                                            fontSize,
+                                            priceFontSize,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 );
-                              }).toList(),
-                            ),
+                              } else {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: widget.pricesList.asMap().entries.map((entry) {
+                                    final index = entry.key;
+                                    final price = entry.value;
+                                    final tileDec = price.decoration ??
+                                        decoration.copyWith(
+                                          border: price.emphasisText != null
+                                              ? Border.all(
+                                                  color: Theme.of(context).colorScheme.primary,
+                                                  width: 5,
+                                                )
+                                              : null,
+                                        );
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          right: index < widget.pricesList.length - 1
+                                              ? spacing * 0.8
+                                              : 0,
+                                        ),
+                                        child: _buildPricingCard(
+                                          context,
+                                          index,
+                                          price,
+                                          tileDec,
+                                          false,
+                                          fontSize,
+                                          priceFontSize,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),
