@@ -30,15 +30,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 600;
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 224, 240, 255),
       body: PricingBackground(
         child: PricingPage(
-          width: isMobile ? double.infinity : 832,
-          childAspectRatio: 0.7,
+          width: 865,
+          childAspectRatio: 0.45,
+          perMonthText: 'Per month',
+          perYearText: 'Per year',
           subtitle:
               "We have you covered, whether you're an unique person running\na side-project, a startup or even an enterprise company.",
           decorationMapper: (decoration) {
@@ -48,14 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           pricesList: [
             PricesModel(
-              title: 'BASE',
-              subTitle: 'SIDE-PROJECTS',
-              monthlyPrice: 80,
-              yearlyPrice: 850,
+              title: 'BASIC',
+              subTitle: 'FOR SIDE-PROJECTS',
+              monthlyPrice: 100,
+              yearlyPrice: 1050,
               advantagesListage: [
-                '<b><u><tC>2<tC><u><b> projects',
-                '<b><u><tC>4<tC><u><b> languages',
-                '<b><u><tC>1<tC><u><b> account',
+                '<b><u><tC>250.000<tC><u><b> api credits',
+                '<b><u><tC>10<tC><u><b> concurrent requests',
+                '<b><u><tC>3<tC><u><b> active endpoints',
               ],
               onTap: (bool isYearly) async {},
             ),
@@ -63,24 +62,30 @@ class _MyHomePageState extends State<MyHomePage> {
               title: 'PRO',
               subTitle: 'FOR STARTUP',
               emphasisText: 'MOST POPULAR',
-              monthlyPrice: 99,
-              yearlyPrice: 999,
+              monthlyPrice: 199,
+              yearlyPrice: 1999,
               advantagesListage: [
-                '<b><u><tC>10<tC><u><b> projects',
-                '<b><u><tC>10<tC><u><b> languages',
-                '<b><u><tC>5<tC><u><b> accounts',
+                '<b><u><tC>1.000.000<tC><u><b> api credits',
+                '<b><u><tC>30<tC><u><b> concurrent requests',
+                '<b><u><tC>10<tC><u><b> active endpoints',
+                'Access a best AI model',
               ],
               onTap: (bool isYearly) async {},
             ),
             PricesModel(
-              title: 'UNLIMITED',
-              subTitle: 'ENTERPRISE',
-              monthlyPrice: 250,
-              yearlyPrice: 2500,
+              title: 'ULTRA',
+              subTitle: 'ENTERPRISE USAGE',
+              monthlyPrice: 500,
+              yearlyPrice: 5500,
               advantagesListage: [
-                '<b><u><tC>Unlimited<tC><u><b> projects',
-                '<b><u><tC>Unlimited<tC><u><b> languages',
-                '<b><u><tC>Unlimited<tC><u><b> accounts',
+                '<b><u><tC>4.000.000<tC><u><b> api credits',
+                '<b><u><tC>100<tC><u><b> concurrent requests',
+                '<b><u><tC>100<tC><u><b> active endpoints',
+                'Access a best AI model',
+                'Priority Support',
+                'Hide your endpoints from marketplace',
+                'Copy endpoints from marketplace',
+                'Ability to purchase one time add-on api credits',
               ],
               onTap: (bool isYearly) async {},
             ),
